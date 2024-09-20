@@ -3,6 +3,7 @@ package repositories
 import (
 	"database/sql"
 	"test-backend/internal/models"
+	"time"
 )
 
 type User interface {
@@ -43,7 +44,9 @@ func (r *UserRepository) GetUsers() ([]models.User, error) {
 }
 
 func (r *UserRepository) CreateUser(user *models.User) error {
-	_, err := r.DB.Exec("INSERT INTO users (id, name, email, password, created_at) VALUES (?, ?, ?, ?, ?)", user.Id)
+	user.CreatedAt = time.Now()
+
+	_, err := r.DB.Exec("INSERT INTO users (name, email, password, created_at) VALUES ($1, $2, $3, $4)", user.Id)
 	if err != nil {
 		return nil
 	}

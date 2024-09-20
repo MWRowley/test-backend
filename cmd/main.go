@@ -7,6 +7,7 @@ import (
 	"test-backend/internal/db"
 	"test-backend/internal/handlers"
 	"test-backend/internal/repositories"
+	"test-backend/internal/seed"
 
 	"github.com/go-chi/chi"
 	log "github.com/sirupsen/logrus"
@@ -14,16 +15,21 @@ import (
 
 func main() {
 	log.SetReportCaller(true)
-	var r *chi.Mux = chi.NewRouter()
-	userRepo := repositories.NewUserRepository(db.DB)
-	handlers.Handler(r, userRepo)
 
 	db.Init()
+
+	var r *chi.Mux = chi.NewRouter()
+
+	userRepo := repositories.NewUserRepository(db.DB)
+
+	seed.SeedUsers(userRepo)
+
+	handlers.Handler(r, userRepo)
 
 	fmt.Println("Starting server on :8000")
 
 	err := http.ListenAndServe(":8000", r)
 	if err != nil {
-		log.Error(err)
+		log.Fatalf("Error starting server: %v", err)
 	}
 }
