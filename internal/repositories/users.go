@@ -46,9 +46,9 @@ func (r *UserRepository) GetUsers() ([]models.User, error) {
 func (r *UserRepository) CreateUser(user *models.User) error {
 	user.CreatedAt = time.Now()
 
-	_, err := r.DB.Exec("INSERT INTO users (name, email, password, created_at) VALUES ($1, $2, $3, $4)", user.Id)
+	_, err := r.DB.Exec("INSERT INTO users (name, email, password, created_at) VALUES ($1, $2, $3, $4)", user.Name, user.Email, user.Password, user.CreatedAt)
 	if err != nil {
-		return nil
+		return err
 	}
 	return err
 }
@@ -56,7 +56,7 @@ func (r *UserRepository) CreateUser(user *models.User) error {
 func (r *UserRepository) UpdateUser(user *models.User) error {
 	_, err := r.DB.Exec("UPDATE users SET name = ?, email = ?, password = ? WHERE id = ?", user.Name, user.Id)
 	if err != nil {
-		return nil
+		return err
 	}
 	return err
 }
@@ -64,7 +64,7 @@ func (r *UserRepository) UpdateUser(user *models.User) error {
 func (r *UserRepository) DeleteUser(id uint) error {
 	_, err := r.DB.Exec("DELETE FROM users WHERE id = ?", id)
 	if err != nil {
-		return nil
+		return err
 	}
 	return err
 }

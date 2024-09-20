@@ -7,6 +7,17 @@ import (
 )
 
 func SeedUsers(userRepo *repositories.UserRepository) {
+	var count int
+	err := userRepo.DB.QueryRow("SELECT COUNT(*) FROM users").Scan(&count)
+	if err != nil {
+		log.Fatalf("Failed to get user count: %v", err)
+	}
+
+	if count > 0 {
+		log.Println("Users already exists, skipping seed")
+		return
+	}
+
 	users := []models.User{
 		{Name: "Matthew", Email: "mattrolwey10@gmail.com", Password: "qazwsx123"},
 		{Name: "Katie", Email: "katiemorales10@gmail.com", Password: "123456"},
