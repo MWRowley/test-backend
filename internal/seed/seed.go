@@ -35,3 +35,33 @@ func SeedUsers(userRepo *repositories.UserRepository) {
 		log.Printf("Seeded user %s", user.Name)
 	}
 }
+
+func SeedPosts(postRepo *repositories.PostRepository) {
+	var count int
+	err := postRepo.DB.QueryRow("SELECT COUNT(*) FROM posts").Scan(&count)
+	if err != nil {
+		log.Fatalf("Failed to get post count: %v", err)
+	}
+
+	if count > 0 {
+		log.Println("Posts already exists, skipping seed")
+		return
+	}
+
+	posts := []models.Post{
+		{Title: "First Post", Content: "This is the first post"},
+		{Title: "Second Post", Content: "This is the second post"},
+		{Title: "Third Post", Content: "This is the third post"},
+		{Title: "Fourth Post", Content: "This is the fourth post"},
+		{Title: "Fifth Post", Content: "This is the fifth post"},
+		{Title: "Sixth Post", Content: "This is the sixth post"},
+	}
+
+	for _, post := range posts {
+		err := postRepo.CreatePost(&post)
+		if err != nil {
+			log.Printf("Failed to seed post %s: %v", post.Title, err)
+		}
+		log.Printf("Seeded post %s", post.Title)
+	}
+}

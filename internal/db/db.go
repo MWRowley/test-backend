@@ -2,7 +2,9 @@ package db
 
 import (
 	"database/sql"
+	"fmt"
 	"log"
+	"test-backend/configs"
 
 	_ "github.com/lib/pq"
 )
@@ -10,7 +12,16 @@ import (
 var DB *sql.DB
 
 func Init() {
-	connStr := "postgres://postgres:Andreanrue1!@localhost:5432/matthewrowley?sslmode=disable"
+	configs.LoadConfig()
+	connStr := fmt.Sprintf("%s://%s:%s@%s:%s/%s?sslmode=disable",
+		configs.DBConfig.User,
+		configs.DBConfig.User,
+		configs.DBConfig.Password,
+		configs.DBConfig.Host,
+		configs.DBConfig.Port,
+		configs.DBConfig.Database,
+	)
+	// connStr := "postgres://postgres:Andreanrue1!@localhost:5432/matthewrowley?sslmode=disable"
 	var err error
 	DB, err = sql.Open("postgres", connStr)
 	if err != nil {
@@ -24,10 +35,11 @@ func Init() {
 
 	log.Println("Connected to Database!")
 
-	createTable()
+	createUserTable()
+	createPostTable()
 }
 
-func createTable() {
+func createUserTable() {
 	query := `
 	CREATE TABLE IF NOT EXISTS users (
 		id SERIAL PRIMARY KEY, 
@@ -44,4 +56,21 @@ func createTable() {
 	}
 
 	log.Println("Created table users")
+}
+
+func createPostTable() {
+	query := `
+	CREATE TABLE IF NOT EXISTS posts (
+		id SERIAL PRIMARY KEY, 
+		title TEXT NOT NULL, 
+		content TEXT NOT NULL, 
+		created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
+		);
+		`
+	_, err := DB.Exec(query)
+	if err != nil {
+		log.Fatalf("Error creating table: %v", err)
+	}
+
+	log.Println("Created table posts")
 }
