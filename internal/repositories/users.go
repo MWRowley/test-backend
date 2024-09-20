@@ -54,7 +54,7 @@ func (r *UserRepository) CreateUser(user *models.User) error {
 }
 
 func (r *UserRepository) UpdateUser(user *models.User) error {
-	_, err := r.DB.Exec("UPDATE users SET name = ?, email = ?, password = ? WHERE id = ?", user.Name, user.Id)
+	_, err := r.DB.Exec("UPDATE users SET name = ?, email = ?, password = ? WHERE id = ?", user.Name, user.Email, user.Password)
 	if err != nil {
 		return err
 	}
