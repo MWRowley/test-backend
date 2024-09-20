@@ -40,7 +40,7 @@ func createTable() {
 
 	_, err := DB.Exec(query)
 	if err != nil {
-		log.Fatalf("Erro creating table: %v", err)
+		log.Fatalf("Error creating table: %v", err)
 	}
 
 	log.Println("Created table users")
