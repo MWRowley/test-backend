@@ -21,6 +21,7 @@ func main() {
 	var r *chi.Mux = chi.NewRouter()
 
 	userRepo := repositories.NewUserRepository(db.DB)
+	// postRepo := repositories.NewPostRepository(db.DB)
 
 	seed.SeedUsers(userRepo)
 
