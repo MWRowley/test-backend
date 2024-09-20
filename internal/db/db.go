@@ -21,7 +21,6 @@ func Init() {
 		configs.DBConfig.Port,
 		configs.DBConfig.Database,
 	)
-	// connStr := "postgres://postgres:Andreanrue1!@localhost:5432/matthewrowley?sslmode=disable"
 	var err error
 	DB, err = sql.Open("postgres", connStr)
 	if err != nil {
