@@ -17,7 +17,7 @@ type Database struct {
 
 var DBConfig Database
 
-func LoadConfig() {
+func LoadDBConfig() {
 	err := godotenv.Load("../.env")
 	if err != nil {
 		log.Println("No .env file found")
@@ -27,6 +27,4 @@ func LoadConfig() {
 	if err != nil {
 		log.Fatal("Error loading config: ", err)
 	}
-
-	log.Println("Loaded Config: ", DBConfig)
 }

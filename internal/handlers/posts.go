@@ -62,3 +62,20 @@ func (h *PostHandler) UpdatePost(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(post)
 }
+
+func (h *PostHandler) DeletePost(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	postId, err := strconv.Atoi(vars["id"])
+	if err != nil {
+		http.Error(w, "Invalid Request Body", http.StatusBadRequest)
+		return
+	}
+
+	err = h.Repo.DeletePost(uint(postId))
+	if err != nil {
+		log.Println("Error deleting post ", err)
+		http.Error(w, "Error deleting post", http.StatusInternalServerError)
+	}
+
+	w.WriteHeader(http.StatusNoContent)
+}

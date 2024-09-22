@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
+	"test-backend/configs"
 	"test-backend/internal/db"
 	"test-backend/internal/handlers"
 	"test-backend/internal/repositories"
@@ -28,11 +29,14 @@ func main() {
 	seed.SeedPosts(postRepo)
 	seed.SeedPhotos(photoRepo)
 
-	handlers.Handler(r, userRepo)
+	handlers.Handler(r, userRepo, postRepo, photoRepo)
 
-	fmt.Println("Starting server on :8000")
+	configs.LoadServerConfig()
 
-	err := http.ListenAndServe(":8000", r)
+	port := configs.ServerConfig.Port
+	fmt.Println("Starting server on port: ", port)
+
+	err := http.ListenAndServe(":"+port, r)
 	if err != nil {
 		log.Fatalf("Error starting server: %v", err)
 	}

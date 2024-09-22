@@ -12,7 +12,7 @@ import (
 var DB *sql.DB
 
 func Init() {
-	configs.LoadConfig()
+	configs.LoadDBConfig()
 	connStr := fmt.Sprintf("%s://%s:%s@%s:%s/%s?sslmode=disable",
 		configs.DBConfig.User,
 		configs.DBConfig.User,
