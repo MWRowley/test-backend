@@ -36,6 +36,7 @@ func Init() {
 
 	createUserTable()
 	createPostTable()
+	createPhotoTable()
 }
 
 func createUserTable() {
@@ -72,4 +73,23 @@ func createPostTable() {
 	}
 
 	log.Println("Created table posts")
+}
+
+func createPhotoTable() {
+	query := `
+	CREATE TABLE IF NOT EXISTS photos (
+		id SERIAL PRIMARY KEY,
+		title TEXT NOT NULL, 
+		description TEXT NOT NULL, 
+		url TEXT NOT NULL, 
+		created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+		updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
+		);
+		`
+	_, err := DB.Exec(query)
+	if err != nil {
+		log.Fatalf("Error creating table: %v", err)
+	}
+
+	log.Println("Created table photos")
 }

@@ -32,7 +32,7 @@ func (r *PhotoRepository) GetPhotos() ([]models.Photo, error) {
 	var photos []models.Photo
 	for rows.Next() {
 		var photo models.Photo
-		if err := rows.Scan(&photo.Id, &photo.Title, &photo.Url, &photo.CreatedAt); err != nil {
+		if err := rows.Scan(&photo.Id, &photo.Title, &photo.Description, &photo.Url, &photo.CreatedAt); err != nil {
 			return nil, err
 		}
 		photos = append(photos, photo)
@@ -43,7 +43,7 @@ func (r *PhotoRepository) GetPhotos() ([]models.Photo, error) {
 func (r *PhotoRepository) CreatePhoto(photo *models.Photo) error {
 	photo.CreatedAt = time.Now()
 
-	_, err := r.DB.Exec("INSERT INTO photos (title, url, created_at) VALUES ($1, $2, $3)", photo.Title, photo.Url, photo.CreatedAt)
+	_, err := r.DB.Exec("INSERT INTO photos (title, description, url, created_at) VALUES ($1, $2, $3, $4)", photo.Title, photo.Description, photo.Url, photo.CreatedAt)
 	if err != nil {
 		return err
 	}
@@ -51,7 +51,9 @@ func (r *PhotoRepository) CreatePhoto(photo *models.Photo) error {
 }
 
 func (r *PhotoRepository) UpdatePhoto(photo *models.Photo) error {
-	_, err := r.DB.Exec("UPDATE photos SET title = ?, url = ? WHERE id = ?", photo.Title, photo.Url, photo.Id)
+	photo.UpdatedAt = time.Now()
+
+	_, err := r.DB.Exec("UPDATE photos SET title = ?, description = ?,  url = ? WHERE id = ?", photo.Title, photo.Description, photo.Url, photo.Id)
 	if err != nil {
 		return err
 	}

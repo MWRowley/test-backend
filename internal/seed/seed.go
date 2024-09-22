@@ -65,3 +65,30 @@ func SeedPosts(postRepo *repositories.PostRepository) {
 		log.Printf("Seeded post %s", post.Title)
 	}
 }
+
+func SeedPhotos(photoRepo *repositories.PhotoRepository) {
+	var count int
+	err := photoRepo.DB.QueryRow("SELECT COUNT(*) FROM photos").Scan(&count)
+	if err != nil {
+		log.Fatalf("Failed to get photo count: %v", err)
+	}
+
+	if count > 0 {
+		log.Println("Photos already exists, skipping seed")
+		return
+	}
+
+	photos := []models.Photo{
+		{Title: "First Photo", Description: "This is the first photo", Url: "https://via.placeholder.com/150"},
+		{Title: "Second Photo", Description: "This is the second photo", Url: "https://via.placeholder.com/150"},
+		{Title: "Third Photo", Description: "This is the third photo", Url: "https://via.placeholder.com/150"},
+	}
+
+	for _, photo := range photos {
+		err := photoRepo.CreatePhoto(&photo)
+		if err != nil {
+			log.Printf("Failed to seed photo %s: %v", photo.Title, err)
+		}
+		log.Printf("Seeded photo %s", photo.Title)
+	}
+}

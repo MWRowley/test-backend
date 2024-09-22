@@ -22,9 +22,11 @@ func main() {
 
 	userRepo := repositories.NewUserRepository(db.DB)
 	postRepo := repositories.NewPostRepository(db.DB)
+	photoRepo := repositories.NewPhotoRepository(db.DB)
 
 	seed.SeedUsers(userRepo)
 	seed.SeedPosts(postRepo)
+	seed.SeedPhotos(photoRepo)
 
 	handlers.Handler(r, userRepo)
 
