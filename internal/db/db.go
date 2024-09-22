@@ -83,7 +83,7 @@ func createPhotoTable() {
 		description TEXT NOT NULL, 
 		url TEXT NOT NULL, 
 		created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
-		updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
+		updated_at TIMESTAMPTZ DEFAULT NULL
 		);
 		`
 	_, err := DB.Exec(query)
