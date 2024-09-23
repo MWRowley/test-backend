@@ -35,9 +35,7 @@ func Init() {
 
 	log.Println("Connected to Database!")
 
-	defer DB.Close()
-
-	migrationDir := "migrations"
+	migrationDir := "../migrations"
 
 	if err := goose.Up(DB, migrationDir); err != nil {
 		log.Fatalf("Error running migrations: %v", err)
