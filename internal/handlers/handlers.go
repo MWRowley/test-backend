@@ -16,6 +16,7 @@ func Handler(r *chi.Mux, userRepo *repositories.UserRepository, postRepo *reposi
 
 	r.Route("/api", func(router chi.Router) {
 		router.Get("/users", userHandler.GetUsers)
+		router.Get("/users/{name}", userHandler.GetUserByName)
 		router.Post("/users", userHandler.CreateUser)
 		router.Put("/users/{id}", userHandler.UpdateUser)
 		router.Delete("/users/{id}", userHandler.DeleteUser)

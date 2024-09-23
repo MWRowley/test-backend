@@ -45,7 +45,7 @@ func (r *UserRepository) GetUsers() ([]models.User, error) {
 
 func (r *UserRepository) GetUserByName(name string) (*models.User, error) {
 	var user models.User
-	err := r.DB.QueryRow("SELECT * FROM users WHERE name = ?", name).Scan(&user.Id, &user.Name, &user.Email, &user.Password, &user.CreatedAt)
+	err := r.DB.QueryRow("SELECT * FROM users WHERE name = $1", name).Scan(&user.Id, &user.Name, &user.Email, &user.Password, &user.CreatedAt)
 	if err != nil {
 		return nil, err
 	}

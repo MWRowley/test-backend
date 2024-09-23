@@ -26,6 +26,24 @@ func (h *UserHandler) GetUsers(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(users)
 }
 
+func (h *UserHandler) GetUserByName(w http.ResponseWriter, r *http.Request) {
+	name := chi.URLParam(r, "name")
+	user, err := h.Repo.GetUserByName(name)
+	if err != nil {
+		log.Println("Error getting user by name: ", err)
+		http.Error(w, "Error getting user by name", http.StatusInternalServerError)
+		return
+	}
+
+	if user == nil {
+		http.Error(w, "User not found", http.StatusNotFound)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(user)
+}
+
 func (h *UserHandler) CreateUser(w http.ResponseWriter, r *http.Request) {
 	var user models.User
 	if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
