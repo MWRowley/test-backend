@@ -1,6 +1,7 @@
 package models
 
 import (
+	"database/sql"
 	"time"
 )
 
@@ -22,7 +23,7 @@ type Post struct {
 	Title          string
 	Content        string
 	CreatedAt      time.Time
-	UpdatedAt      time.Time
+	UpdatedAt      sql.NullTime
 	AiPhotoDesc    string
 	Image          string
 	User           []User
@@ -37,7 +38,7 @@ type Photo struct {
 	Description string
 	Url         string
 	CreatedAt   time.Time
-	UpdatedAt   time.Time
+	UpdatedAt   sql.NullTime
 	Post        []Post
 }
 

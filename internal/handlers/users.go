@@ -8,7 +8,7 @@ import (
 	"test-backend/internal/models"
 	"test-backend/internal/repositories"
 
-	"github.com/gorilla/mux"
+	"github.com/go-chi/chi"
 )
 
 type UserHandler struct {
@@ -45,8 +45,7 @@ func (h *UserHandler) CreateUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *UserHandler) UpdateUser(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
-	userId, err := strconv.Atoi(vars["id"])
+	userId, err := strconv.Atoi(chi.URLParam(r, "id"))
 	if err != nil {
 		http.Error(w, "Invalid User ID", http.StatusBadRequest)
 		return
@@ -72,8 +71,7 @@ func (h *UserHandler) UpdateUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *UserHandler) DeleteUser(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
-	userId, err := strconv.Atoi(vars["id"])
+	userId, err := strconv.Atoi(chi.URLParam(r, "id"))
 	if err != nil {
 		http.Error(w, "Invalid User Id", http.StatusBadRequest)
 		return

@@ -7,6 +7,7 @@ import (
 	"test-backend/configs"
 
 	_ "github.com/lib/pq"
+	"github.com/pressly/goose/v3"
 )
 
 var DB *sql.DB
@@ -33,6 +34,16 @@ func Init() {
 	}
 
 	log.Println("Connected to Database!")
+
+	defer DB.Close()
+
+	migrationDir := "migrations"
+
+	if err := goose.Up(DB, migrationDir); err != nil {
+		log.Fatalf("Error running migrations: %v", err)
+	}
+
+	log.Println("Migrations ran successfully")
 
 	createUserTable()
 	createPostTable()
@@ -64,7 +75,8 @@ func createPostTable() {
 		id SERIAL PRIMARY KEY, 
 		title TEXT NOT NULL, 
 		content TEXT NOT NULL, 
-		created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
+		created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+		updated_at TIMESTAMPTZ DEFAULT NULL
 		);
 		`
 	_, err := DB.Exec(query)

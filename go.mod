@@ -9,8 +9,15 @@ require (
 )
 
 require (
-	github.com/gorilla/mux v1.8.1
+	github.com/mfridman/interpolate v0.0.2 // indirect
+	github.com/sethvargo/go-retry v0.3.0 // indirect
+	go.uber.org/multierr v1.11.0 // indirect
+	golang.org/x/sync v0.8.0 // indirect
+)
+
+require (
 	github.com/joho/godotenv v1.5.1
 	github.com/kelseyhightower/envconfig v1.4.0
-	golang.org/x/sys v0.0.0-20220715151400-c0bba94af5f8 // indirect
+	github.com/pressly/goose/v3 v3.22.1
+	golang.org/x/sys v0.25.0 // indirect
 )

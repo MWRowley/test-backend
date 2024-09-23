@@ -62,7 +62,9 @@ func (r *PostRepository) CreatePost(post *models.Post) error {
 }
 
 func (r *PostRepository) UpdatePost(post *models.Post) error {
-	_, err := r.DB.Exec("UPDATE posts SET title = ?, content = ? WHERE id = ?", post.Title, post.Content)
+	post.UpdatedAt = sql.NullTime{Time: time.Now(), Valid: true}
+
+	_, err := r.DB.Exec("UPDATE posts SET title = $1, content = $2 WHERE id = $3", post.Title, post.Content, post.Id)
 	if err != nil {
 		return err
 	}
@@ -70,7 +72,7 @@ func (r *PostRepository) UpdatePost(post *models.Post) error {
 }
 
 func (r *PostRepository) DeletePost(id uint) error {
-	_, err := r.DB.Exec("DELETE FROM posts WHERE id = ?", id)
+	_, err := r.DB.Exec("DELETE FROM posts WHERE id = $1", id)
 	if err != nil {
 		return err
 	}

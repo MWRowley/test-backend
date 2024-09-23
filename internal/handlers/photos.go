@@ -8,7 +8,7 @@ import (
 	"test-backend/internal/models"
 	"test-backend/internal/repositories"
 
-	"github.com/gorilla/mux"
+	"github.com/go-chi/chi"
 )
 
 type PhotoHandler struct {
@@ -43,8 +43,7 @@ func (h *PhotoHandler) CreatePhoto(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *PhotoHandler) UpdatePhoto(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
-	photoId, err := strconv.Atoi(vars["id"])
+	photoId, err := strconv.Atoi(chi.URLParam(r, "id"))
 	if err != nil {
 		http.Error(w, "Invalid Photo ID", http.StatusBadRequest)
 		return
@@ -68,8 +67,7 @@ func (h *PhotoHandler) UpdatePhoto(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *PhotoHandler) DeletePhoto(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
-	photoId, err := strconv.Atoi(vars["id"])
+	photoId, err := strconv.Atoi(chi.URLParam(r, "id"))
 	if err != nil {
 		http.Error(w, "Invalid Photo ID", http.StatusBadRequest)
 		return
