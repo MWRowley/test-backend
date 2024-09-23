@@ -35,7 +35,7 @@ func (r *PostRepository) GetPosts() ([]models.Post, error) {
 	var posts []models.Post
 	for rows.Next() {
 		var post models.Post
-		if err := rows.Scan(&post.Id, &post.Title, &post.Content, &post.CreatedAt); err != nil {
+		if err := rows.Scan(&post.Id, &post.Title, &post.Content, &post.CreatedAt, &post.UpdatedAt); err != nil {
 			return nil, err
 		}
 		posts = append(posts, post)
